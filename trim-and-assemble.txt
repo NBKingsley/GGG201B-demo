@@ -1,0 +1,87 @@
+    1  screen
+    2  clear
+    3  sudo apt-get -y update
+    4  sudo apt-get -y install r-base python3-matplotlib libzmq3-dev python3.5-dev texlive-latex-extra texlive-latex-recommended python3-virtualenv
+    5  clear
+    6  ls
+    7  sudo apt-get -y install r-base python3-matplotlib libzmq3-dev python3.5-dev texlive-latex-extra texlive-latex-recommended python3-virtualenv
+    8  cd ~/
+    9  python3 -m virtualenv -p python3.5 env --system-site-packages
+   10  . ~/env/bin/activate
+   11  pip3 install -U jupyter jupyter_client ipython pandas
+   12  jupyter notebook --generate-config
+   13  cat >>/home/ubuntu/.jupyter/jupyter_notebook_config.py <<EOF                    
+   14  c = get_config()                                                                
+   15  c.NotebookApp.ip = '*'                                                          
+   16  c.NotebookApp.open_browser = False                                              
+   17  c.NotebookApp.password = u'sha1:5d813e5d59a7:b4e430cf6dbd1aad04838c6e9cf684f4d76e245c'                                                                         
+   18  c.NotebookApp.port = 8000                                                       
+   19                                                                                  
+   20  EOF
+   21  vi 
+   22  vi .jupyter/jupyter_notebook_config.py 
+   23  ps auxw | grep cron
+   24  crontab -e
+   25  cd
+   26  cat >run-notebook.sh <<EOF                                                      
+   27  #! /bin/bash                                                                    
+   28  . ~ubuntu/env/bin/activate                                                      
+   29  jupyter notebook                                                                
+   30  EOF                                                                             
+   31  chmod +x run-notebook.sh
+   32  cat >run-notebook.sh <<EOF                                                      
+   33  #! /bin/bash                                                                    
+   34  . ~ubuntu/env/bin/activate                                                      
+   35  jupyter notebook                                                                
+   36  EOF                                                                             
+   37  chmod +x run-notebook.sh
+   38  EOF
+   39  vi run-notebook.sh 
+   40  chmod +x run-notebook.sh 
+   41  crontab -e
+   42  /home/ubuntu/run-notebook.sh 
+   43  vi run-notebook.sh 
+   44  ./run-notebook.sh 
+   45  fg
+   46  jobs
+   47  ps 
+   48  kill 17920
+   49  vi run-notebook.sh 
+   50  ./run-notebook.sh 
+   51  more .notebook.log 
+   52  more .notebook.err 
+   53  clear
+   54  sudo bash
+   55  shutdown -r now
+   56  screen -r
+   57  ps auxw | grep note
+   58  crontab -l
+   59  shutdown -h now
+   60  pip install khmer==2.0
+   61  mkdir ~/work
+   62  cd ~/work
+   63  curl -O -L https://s3.amazonaws.com/public.ged.msu.edu/ecoli_ref-5m.fastq.gz
+   64  gunzip -c ecoli_ref-5m.fastq.gz | split-paired-reads.py -1 top.R1.fq -2 top.R2.fq
+   65  ls
+   66  sudo apt-get -y install trimmomatic
+   67  wget https://anonscm.debian.org/cgit/debian-med/trimmomatic.git/plain/adapters/TruSeq3-PE.fa
+   68  TrimmomaticPE top.R1.fq top.R2.fq \ out_r1.fq orphan1.fq out_r2.fq orphan2.fq \ ILLUMINACLIP:TruSeq3-PE.fa:2:40:15 \ LEADING:2 TRAILING:2 \ SLIDINGWINDOW:4:2 \ MINLEN:25
+   69  interleave-reads.py out_r1.fq out_r2.fq > top-pe.fq
+   70  ls
+   71  cd ..
+   72  ls
+   73  git clone https://github.com/voutcn/megahit.git
+   74  cd megahit
+   75  make -j 4
+   76  cd ~/work
+   77  ~/megahit/megahit --12 top-pe.fq -r orphan1.fq orphan2.fq -o ecoli
+   78  ls
+   79  cp megahit_out/final.contigs.fa ecoli-assembly.fa
+   80  cd ~/
+   81  git clone https://github.com/ablab/quast.git -b release_4.2
+   82  export PYTHONPATH=$(pwd)/quast/libs/
+   83  cd ~/work
+   84  python2.7 ~/quast/quast.py ecoli-assembly.fa -o ecoli_report
+   85  ls
+   86  cat ecoli_report/report.txt
+   87  history > trim-and-assemble.txt
