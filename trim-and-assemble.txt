@@ -85,3 +85,28 @@
    85  ls
    86  cat ecoli_report/report.txt
    87  history > trim-and-assemble.txt
+   
+Assembly                    ecoli-assembly
+# contigs (>= 0 bp)         119
+# contigs (>= 1000 bp)      92
+# contigs (>= 5000 bp)      69
+# contigs (>= 10000 bp)     64
+# contigs (>= 25000 bp)     52
+# contigs (>= 50000 bp)     32
+Total length (>= 0 bp)      4577489
+Total length (>= 1000 bp)   4564923
+Total length (>= 5000 bp)   4507996
+Total length (>= 10000 bp)  4470785
+Total length (>= 25000 bp)  4295818
+Total length (>= 50000 bp)  3578637
+# contigs                   102
+Largest contig              246618
+Total length                4571801
+GC (%)                      50.75
+N50                         105709
+N75                         53842
+L50                         15
+L75                         30
+# N's per 100 kbp           0.00
+
+In comparison to the untrimmed assembly, this one has essentially the same values. The number of contigs greater than or equal to zero basepairs is higher by two; the total length values are slightly different; and the N50 metric is up by one. All in all, trimming had limited impact on this particular data set. 
