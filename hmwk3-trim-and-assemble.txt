@@ -41,3 +41,7 @@
  python2 gather-counts.py
 
  Rscript --no-save  ~/GGG201B-demo/yeast.salmon.R.txt 
+ 
+ # 4459 from my script with an FCR < 0.05
+ # 4031 from lab 8 with an FDR < 0.05
+ # I included the next two technical replicates, so I would not expect to find major differences between my current analysis and that done during lab 8
